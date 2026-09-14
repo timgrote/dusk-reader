@@ -1,5 +1,7 @@
-const defaults = { enabled: true, disabledSites: [] };
+const defaults = { enabled: true, disabledSites: [], themeMode: "unknown", themePalette: {} };
 const siteMenuId = "toggle-site";
+const themeAlarm = "refresh-omarchy-theme";
+const nativeHost = "io.github.tim.dusk_reader";
 const lupine = {
   on: "#3264eb",
   off: "#64748b",
@@ -34,10 +36,40 @@ async function settings() {
   return chrome.storage.local.get(defaults);
 }
 
+function effectiveEnabled(current) {
+  return current.enabled && current.themeMode !== "light";
+}
+
 async function setActionState() {
-  const { enabled } = await settings();
+  const current = await settings();
+  const enabled = effectiveEnabled(current);
+  const suffix = current.themeMode === "light" ? "off (light Omarchy theme)" : enabled ? "on" : "off";
   await chrome.action.setIcon({ imageData: iconImage(enabled) });
-  await chrome.action.setTitle({ title: `Dusk Reader: ${enabled ? "on" : "off"}` });
+  await chrome.action.setTitle({ title: `Dusk Reader: ${suffix}` });
+}
+
+function validColor(value) {
+  return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value);
+}
+
+function validTheme(message) {
+  if (!message || !["light", "dark"].includes(message.mode) || !message.palette) return false;
+  return ["background", "foreground", "accent", "surface", "muted", "selection"].every((key) => validColor(message.palette[key]));
+}
+
+async function refreshOmarchyTheme() {
+  try {
+    const message = await chrome.runtime.sendNativeMessage(nativeHost, { type: "get-theme" });
+    if (!validTheme(message)) return;
+    await chrome.storage.local.set({ themeMode: message.mode, themePalette: message.palette });
+  } catch {
+    // The optional local bridge is not installed yet, or Brave has stopped it.
+  }
+}
+
+function startThemeRefresh() {
+  chrome.alarms.create(themeAlarm, { periodInMinutes: 1 });
+  refreshOmarchyTheme();
 }
 
 function hostForTab(tab) {
@@ -79,9 +111,13 @@ function createMenus() {
 chrome.runtime.onInstalled.addListener(() => {
   createMenus();
   setActionState();
+  startThemeRefresh();
 });
 
-chrome.runtime.onStartup.addListener(setActionState);
+chrome.runtime.onStartup.addListener(() => {
+  setActionState();
+  startThemeRefresh();
+});
 
 chrome.action.onClicked.addListener(async () => {
   const current = await settings();
@@ -90,6 +126,10 @@ chrome.action.onClicked.addListener(async () => {
 
 chrome.storage.onChanged.addListener((_changes, area) => {
   if (area === "local") setActionState();
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === themeAlarm) refreshOmarchyTheme();
 });
 
 chrome.contextMenus.onShown.addListener(async (_info, tab) => {

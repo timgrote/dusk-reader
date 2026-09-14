@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
   "name": "Dusk Reader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A private, local-only dark theme for websites.",
-  "permissions": ["storage", "contextMenus"],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzQo9NgdZzPA5zitz8SShU0fW+OLB2tKj2qvnHEcpCa4FVfOLzKP3W6/GfzZezlXM+xeGaQSiBMu3GWFNL8ln69SjpZPg2ex7LsEi8i9PqKIlWaEHd+0TFYovkV2AMa06q/LEmwe1a2qu44v8mDrY3TWkaqmvvIJTkP7FdT//0gVHzCwPOAVyb1omjYT/ZAPmPM/MRFueGUT8dh/nFOZ/Rmee2mhy1Gmnx/w7+/oKrfzMKL03G0Bzb/B4Xlk5eIF9Qt1OXKDG4+lcyFI/8pL5ctLiLZijN9R6e1PSemiz1IZcaLOiGWUFB8gLrrcqwIDAG+VzSut/SH7mL7o3Qd0ptQIDAQAB",
+  "permissions": ["storage", "contextMenus", "alarms", "nativeMessaging"],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_title": "Dusk Reader: on"
