@@ -1,0 +1,8 @@
+# Brave/Chrome developer-profile artifacts
+*.crx
+*.pem
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/

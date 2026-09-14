@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Dusk Reader",
+  "version": "1.0.0",
+  "description": "A private, local-only dark theme for websites.",
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "Dusk Reader",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["dark.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
