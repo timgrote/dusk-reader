@@ -1,15 +1,15 @@
 /* Applied only when content.js puts .dusk-reader-enabled on <html>. */
 html.dusk-reader-enabled {
   color-scheme: dark !important;
-  background: #111827 !important;
+  background: #151a27 !important;
 }
 
 html.dusk-reader-enabled,
 html.dusk-reader-enabled body,
 html.dusk-reader-enabled body *:not(svg):not(path):not(video):not(canvas):not(iframe) {
   background-color: transparent !important;
-  border-color: #4b5563 !important;
-  color: #e5e7eb !important;
+  border-color: #46516b !important;
+  color: #e6ebff !important;
   text-shadow: none !important;
   box-shadow: none !important;
 }
@@ -24,7 +24,7 @@ html.dusk-reader-enabled nav,
 html.dusk-reader-enabled aside,
 html.dusk-reader-enabled [role="main"],
 html.dusk-reader-enabled [role="dialog"] {
-  background-color: #111827 !important;
+  background-color: #151a27 !important;
 }
 
 html.dusk-reader-enabled input,
@@ -32,18 +32,18 @@ html.dusk-reader-enabled textarea,
 html.dusk-reader-enabled select,
 html.dusk-reader-enabled button,
 html.dusk-reader-enabled [contenteditable="true"] {
-  background-color: #1f2937 !important;
-  color: #f9fafb !important;
-  border-color: #6b7280 !important;
+  background-color: #202737 !important;
+  color: #f8faff !important;
+  border-color: #53617d !important;
 }
 
 html.dusk-reader-enabled a,
 html.dusk-reader-enabled a * {
-  color: #93c5fd !important;
+  color: #8cabff !important;
 }
 
 html.dusk-reader-enabled ::selection {
-  background: #2563eb !important;
+  background: #3264eb !important;
   color: #ffffff !important;
 }
 

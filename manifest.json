@@ -3,11 +3,13 @@
   "name": "Dusk Reader",
   "version": "1.0.0",
   "description": "A private, local-only dark theme for websites.",
-  "permissions": ["storage"],
+  "permissions": ["storage", "contextMenus"],
   "host_permissions": ["<all_urls>"],
   "action": {
-    "default_title": "Dusk Reader",
-    "default_popup": "popup.html"
+    "default_title": "Dusk Reader: on"
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
