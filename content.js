@@ -1,6 +1,8 @@
 (() => {
   const root = document.documentElement;
   const defaultSettings = { enabled: true, disabledSites: [], themeMode: "unknown", themePalette: {} };
+  const darkPreference = window.matchMedia("(prefers-color-scheme: dark)");
+  let currentSettings;
 
   function hostname() {
     return location.hostname.toLowerCase();
@@ -12,6 +14,7 @@
   }
 
   function apply(settings) {
+    currentSettings = settings;
     const palette = settings.themePalette || {};
     const names = {
       background: "--dusk-background",
@@ -28,11 +31,16 @@
         root.style.removeProperty(variable);
       }
     }
-    const enabled = Boolean(settings.enabled) && settings.themeMode !== "light" && !isDisabledForSite(settings);
+    const darkTheme = settings.themeMode === "dark" ||
+      (settings.themeMode !== "light" && darkPreference.matches);
+    const enabled = Boolean(settings.enabled) && darkTheme && !isDisabledForSite(settings);
     root.classList.toggle("dusk-reader-enabled", enabled);
   }
 
   chrome.storage.local.get(defaultSettings).then(apply);
+  darkPreference.addEventListener("change", () => {
+    if (currentSettings) apply(currentSettings);
+  });
   chrome.storage.onChanged.addListener((_changes, area) => {
     if (area === "local") chrome.storage.local.get(defaultSettings).then(apply);
   });

@@ -20,7 +20,11 @@ The browser will show **"Read and change all your data on all websites"** becaus
 4. Select this `dusk-reader` folder.
 5. Pin **Dusk Reader** from Brave's Extensions menu.
 
-The extension starts enabled. Click its crescent toolbar icon once to toggle dark mode globally: blue means on and gray means off. Right-click the icon (or any page) and choose **Enable/Disable dark mode on _site_** to make a per-site exception. Reload a page if it was already open when you installed the extension.
+The extension starts enabled. Without an Omarchy theme, it follows the browser's `prefers-color-scheme` preference: pages are darkened in dark mode and left unchanged in light mode. Open pages respond immediately when that preference changes. Browser settings can override the operating system preference.
+
+On Windows, no helper, executable, registry registration, or native messaging is used. The extension keeps its default palette; it does not read the Windows accent color.
+
+Click its crescent toolbar icon to enable or disable darkening globally. When following the browser preference, blue means automatic darkening is enabled (it still waits for dark mode); gray means disabled. Right-click the icon (or any page) and choose **Enable/Disable dark mode on _site_** to make a per-site exception. Reload a page if it was already open when you installed or reloaded the extension.
 
 ## Optional Omarchy integration
 

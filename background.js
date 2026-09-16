@@ -43,7 +43,8 @@ function effectiveEnabled(current) {
 async function setActionState() {
   const current = await settings();
   const enabled = effectiveEnabled(current);
-  const suffix = current.themeMode === "light" ? "off (light Omarchy theme)" : enabled ? "on" : "off";
+  const suffix = !current.enabled ? "off" : current.themeMode === "light" ? "off (light Omarchy theme)" :
+    current.themeMode === "dark" ? "on" : "enabled (follows browser light/dark preference)";
   await chrome.action.setIcon({ imageData: iconImage(enabled) });
   await chrome.action.setTitle({ title: `Dusk Reader: ${suffix}` });
 }
@@ -58,6 +59,8 @@ function validTheme(message) {
 }
 
 async function refreshOmarchyTheme() {
+  const { os } = await chrome.runtime.getPlatformInfo();
+  if (os === "win") return;
   try {
     const message = await chrome.runtime.sendNativeMessage(nativeHost, { type: "get-theme" });
     if (!validTheme(message)) return;
@@ -67,7 +70,14 @@ async function refreshOmarchyTheme() {
   }
 }
 
-function startThemeRefresh() {
+async function startThemeRefresh() {
+  const { os } = await chrome.runtime.getPlatformInfo();
+  if (os === "win") {
+    await chrome.alarms.clear(themeAlarm);
+    // Discard any old bridge state: Windows follows the browser preference.
+    await chrome.storage.local.set({ themeMode: "unknown", themePalette: {} });
+    return;
+  }
   chrome.alarms.create(themeAlarm, { periodInMinutes: 1 });
   refreshOmarchyTheme();
 }
