@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Export the resolved Omarchy palette as data for Dusk Reader's native host.
+state_root="${XDG_STATE_HOME:-$HOME/.local/state}/omarchy/dusk-reader"
+output="$state_root/palette.json"
+
+color() {
+  local value
+  value="$(omarchy-theme-color "$1" "$2" 2>/dev/null || true)"
+  [[ $value =~ ^#[0-9A-Fa-f]{6}$ ]] || value="$2"
+  printf '%s' "$value"
+}
+
+mode="$(omarchy-theme-color mode dark 2>/dev/null || true)"
+[[ $mode == "light" || $mode == "dark" ]] || mode="dark"
+
+mkdir -p "$state_root"
+temporary="$(mktemp "$state_root/palette.XXXXXX")"
+trap 'rm -f "$temporary"' EXIT
+
+jq -n \
+  --arg mode "$mode" \
+  --arg background "$(color background '#151a27')" \
+  --arg foreground "$(color foreground '#e6ebff')" \
+  --arg accent "$(color accent '#8cabff')" \
+  --arg surface "$(color lighter_background '#202737')" \
+  --arg muted "$(color muted '#53617d')" \
+  --arg selection "$(color selection '#3264eb')" \
+  '{mode: $mode, palette: {background: $background, foreground: $foreground, accent: $accent, surface: $surface, muted: $muted, selection: $selection}}' \
+  >"$temporary"
+mv "$temporary" "$output"

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Kept under this name so Omarchy's theme-rotation plugin can call it after a
+# theme change when both optional components are installed.
+exec "$(dirname "${BASH_SOURCE[0]}")/omarchy-theme-export"

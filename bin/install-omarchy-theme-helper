@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# The public key in Dusk Reader's manifest makes this ID stable for unpacked use.
+extension_id="iahjnpkijodbkdplbgbnpccebgbnjbdj"
+project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+bin_dir="${XDG_BIN_HOME:-$HOME/.local/bin}"
+host_dir="${XDG_CONFIG_HOME:-$HOME/.config}/BraveSoftware/Brave-Browser/NativeMessagingHosts"
+host_manifest="$host_dir/io.github.tim.dusk_reader.json"
+
+mkdir -p "$bin_dir" "$host_dir"
+install -m 0755 "$project_root/bin/omarchy-theme-export" "$bin_dir/dusk-reader-omarchy-theme-export"
+install -m 0755 "$project_root/bin/omarchy-theme-rotation-export-dusk-reader-palette" "$bin_dir/omarchy-theme-rotation-export-dusk-reader-palette"
+install -m 0755 "$project_root/bin/dusk-reader-native-host" "$bin_dir/dusk-reader-native-host"
+"$bin_dir/omarchy-theme-rotation-export-dusk-reader-palette"
+
+jq -n \
+  --arg path "$bin_dir/dusk-reader-native-host" \
+  --arg origin "chrome-extension://$extension_id/" \
+  '{name: "io.github.tim.dusk_reader", description: "Local Omarchy palette for Dusk Reader", path: $path, type: "stdio", allowed_origins: [$origin]}' \
+  >"$host_manifest"
+
+printf 'Omarchy theme helper installed for Dusk Reader. Reload the extension in brave://extensions.\n'

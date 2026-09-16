@@ -24,15 +24,15 @@ The extension starts enabled. Click its crescent toolbar icon once to toggle dar
 
 ## Optional Omarchy integration
 
-When paired with the `theme-rotation-plugin` bridge, Dusk Reader receives the active Omarchy palette locally. It automatically stays off for themes whose palette declares `mode = "light"`, while preserving your global preference for the next dark theme.
+When paired with the included Omarchy theme helper, Dusk Reader receives the active Omarchy palette locally. It automatically stays off for themes whose palette declares `mode = "light"`, while preserving your global preference for the next dark theme.
 
 Install the bridge after loading this unpacked extension:
 
 ```bash
-/home/tim/Work/theme-rotation-plugin/bin/install-dusk-reader-bridge
+./bin/install-omarchy-theme-helper
 ```
 
-The installer copies two auditable scripts to `~/.local/bin/` and registers a Brave native-messaging manifest that allows only this extension ID. It creates no service or daemon. The extension checks that local source once a minute and at browser startup.
+The installer copies the included helper scripts to `~/.local/bin/` and registers a Brave native-messaging manifest that allows only this extension ID. It creates no service or daemon. The helper exports the active palette when installed; run `dusk-reader-omarchy-theme-export` after changing themes to refresh it. If you also use the Omarchy theme-rotation plugin, it refreshes the palette automatically. The extension checks that local source once a minute and at browser startup.
 
 ## Limits
 
