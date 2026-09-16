@@ -1,37 +1,30 @@
 /* Applied only when content.js puts .dusk-reader-enabled on <html>. */
 html.dusk-reader-enabled {
   color-scheme: dark !important;
-  background: var(--dusk-background, #151a27) !important;
 }
 
 html.dusk-reader-enabled,
 html.dusk-reader-enabled body,
 html.dusk-reader-enabled body *:not(svg):not(path):not(video):not(canvas):not(iframe) {
-  background-color: transparent !important;
   border-color: var(--dusk-muted, #46516b) !important;
   color: var(--dusk-foreground, #e6ebff) !important;
   text-shadow: none !important;
   box-shadow: none !important;
 }
 
-html.dusk-reader-enabled body,
-html.dusk-reader-enabled main,
-html.dusk-reader-enabled article,
-html.dusk-reader-enabled section,
-html.dusk-reader-enabled header,
-html.dusk-reader-enabled footer,
-html.dusk-reader-enabled nav,
-html.dusk-reader-enabled aside,
-html.dusk-reader-enabled [role="main"],
-html.dusk-reader-enabled [role="dialog"] {
+/* Only replace existing opaque surfaces. Transparent wrappers stay transparent.
+   Temporarily suspend these rules while content.js reads the site's colors. */
+html.dusk-reader-enabled:not(.dusk-reader-measuring),
+html.dusk-reader-enabled:not(.dusk-reader-measuring) body,
+html.dusk-reader-enabled:not(.dusk-reader-measuring) [data-dusk-reader-surface] {
   background-color: var(--dusk-background, #151a27) !important;
 }
 
-html.dusk-reader-enabled input,
-html.dusk-reader-enabled textarea,
-html.dusk-reader-enabled select,
-html.dusk-reader-enabled button,
-html.dusk-reader-enabled [contenteditable="true"] {
+html.dusk-reader-enabled:not(.dusk-reader-measuring) input[data-dusk-reader-surface],
+html.dusk-reader-enabled:not(.dusk-reader-measuring) textarea[data-dusk-reader-surface],
+html.dusk-reader-enabled:not(.dusk-reader-measuring) select[data-dusk-reader-surface],
+html.dusk-reader-enabled:not(.dusk-reader-measuring) button[data-dusk-reader-surface],
+html.dusk-reader-enabled:not(.dusk-reader-measuring) [contenteditable="true"][data-dusk-reader-surface] {
   background-color: var(--dusk-surface, #202737) !important;
   color: var(--dusk-foreground, #f8faff) !important;
   border-color: var(--dusk-muted, #53617d) !important;
@@ -45,13 +38,4 @@ html.dusk-reader-enabled a * {
 html.dusk-reader-enabled ::selection {
   background: var(--dusk-selection, #3264eb) !important;
   color: #ffffff !important;
-}
-
-/* Preserve the original appearance of visual media. */
-html.dusk-reader-enabled img,
-html.dusk-reader-enabled video,
-html.dusk-reader-enabled canvas,
-html.dusk-reader-enabled svg,
-html.dusk-reader-enabled iframe {
-  background-color: initial !important;
 }

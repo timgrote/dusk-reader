@@ -40,7 +40,7 @@ The installer copies the included helper scripts to `~/.local/bin/` and register
 
 ## Limits
 
-This is a deliberately simple stylesheet-based darkener, rather than Dark Reader's sophisticated per-site dynamic color engine. Some complex sites may need to be excluded, and browser-internal pages, the Chrome Web Store, PDF viewer, and protected pages cannot be modified by any regular extension.
+The extension recolors existing opaque background surfaces, including dynamically inserted cards and menus, while preserving transparent and translucent backgrounds. It observes page changes and batches background checks once per animation frame. Gradients, background images, pseudo-elements, and shadow DOM are not recolored by this surface detection. Some complex sites may need to be excluded, and browser-internal pages, the Chrome Web Store, PDF viewer, and protected pages cannot be modified by any regular extension.
 
 ## Inspect or modify
 
